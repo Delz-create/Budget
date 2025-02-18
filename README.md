@@ -1,7 +1,7 @@
 # Budget App
-##Key features
+## Key features
 
-###- Set Budget:
+### - Set Budget:
 
 - Users input a budget and click "Set Budget".
 
@@ -9,7 +9,7 @@
 
 - A success message is displayed.
 
-###- Add Expense:
+### - Add Expense:
 
 - Users input a product name and price.
 
@@ -17,7 +17,7 @@
 
 - A success message is displayed.
 
-###- Edit Expense:
+### - Edit Expense:
 
 - Users click "Edit" on an expense.
 
@@ -27,7 +27,7 @@
 
 - The expense list updates, and a success message is displayed.
 
-###- Delete Expense:
+### - Delete Expense:
 
 - Users click "Delete" on an expense.
 
@@ -35,8 +35,8 @@
 
 - A success message is displayed.
 
-- Validation:
+### - Validation:
 
 - Real-time validation ensures users enter valid data.
 
-Error messages are displayed below invalid inputs.
+- Error messages are displayed below invalid inputs.
