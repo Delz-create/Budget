@@ -1,0 +1,130 @@
+@font-face {
+    font-family: roboto;
+    src: url(./fonts/Roboto/Roboto-Regular.ttf);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: roboto;
+    background-color: #f7d7ad;
+    padding: 3rem;
+}
+
+button{
+    font-size: 1em;
+    margin-top: 0.8em;
+    background-color: #587ef4;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 0.6em 1.2em;
+    border-radius: 0.3em;
+    cursor: pointer;
+}
+
+.container
+h2{
+    margin: 0 0 .6rem 0;
+}
+
+.container{
+    background-color: #faebd7;
+    padding: 1.25em 0.9em;
+    border-radius: .3rem;
+    box-shadow: 0 0.6em 1.2em #1c00500f;
+    margin: 0 0 2rem 0;
+}
+
+input{
+    display: block;
+    width: 100%;
+    padding: 0.6em 0.3em;
+    border: 1px solid #d0d0d0;
+    border-radius: 0.3em;
+    color: #414a67;
+    outline: none;
+    font-weight: 400;
+    margin-bottom: 0.6em;
+}
+
+input:focus{
+    border-color: #f7d7ad;
+}
+
+.sub-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3em;
+}
+
+.summary_sub{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.expense_item li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem 2rem .5rem 2rem;
+    margin: 0 0 1rem 0;
+    list-style: none;
+    border-left: 5px solid #f7d7ad;
+}
+
+.expense_item-product_btn{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.expense_item-product_btn 
+button{
+    padding: 0;
+    background-color: transparent;
+}
+
+.message {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: .2.5rem;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+@media screen and (min-width: 600px) {
+
+    .sub-container{
+        grid-template-columns: 1fr;
+        gap: 1em;
+    }
+
+    .summary_sub{
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+    .total-budget,
+    .total-expenses,
+    .remaining-balance{
+        margin: 0 0 .5rem 0;
+    }
+    /* .expense_item
+    li{
+        display: flex;
+        flex-direction: column;
+    } */
+    .expense_item-product_name h4{
+        margin: 0 0 1rem 0;
+    }
+}

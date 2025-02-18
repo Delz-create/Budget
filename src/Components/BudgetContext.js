@@ -1,0 +1,150 @@
+import React, { createContext, useState, useContext, useEffect } from 'react';
+
+const BudgetContext = createContext();
+
+export const BudgetProvider = ({ children }) => {
+    const [budget, setBudget] = useState(() => {
+        const savedBudget = localStorage.getItem('budget');
+        return savedBudget ? parseFloat(savedBudget) : 0;
+    });
+
+    const [message, setMessage] = useState('');
+    const [expenses, setExpenses] = useState(() => {
+        const savedExpenses = localStorage.getItem('expenses');
+        try {
+            return savedExpenses ? JSON.parse(savedExpenses) : [];
+        } catch (error) {
+            console.error('Error parsing expenses:', error);
+            return [];
+        }
+    });
+
+    const [validationErrors, setValidationErrors] = useState({
+        budget: '',
+        product: '',
+        price: '',
+    });
+
+    const [expenseToEdit, setExpenseToEdit] = useState(null); 
+
+    useEffect(() => localStorage.setItem('budget', budget), [budget]);
+    useEffect(() => localStorage.setItem('expenses', JSON.stringify(expenses)), [expenses]);
+
+    const handleSetBudget = (value) => {
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) {
+            setMessage('Please enter a valid number for the budget');
+            setTimeout(() => setMessage(''), 5000);
+            return;
+        }
+        if (numValue < 0) {
+            setMessage('Budget must be a positive number');
+            setTimeout(() => setMessage(''), 5000);
+            return;
+        }
+        setBudget(numValue);
+        setMessage(`Budget set to: $${numValue}`);
+        setTimeout(() => setMessage(''), 5000);
+    };
+
+    const addExpense = (product, price) => {
+        const priceNumber = parseFloat(price);
+
+        if (!product || isNaN(priceNumber)) {
+            setMessage('Please enter valid product and price');
+            setTimeout(() => setMessage(''), 5000);
+            return;
+        }
+
+        if (priceNumber <= 0) {
+            setMessage('Price must be greater than 0');
+            setTimeout(() => setMessage(''), 5000);
+            return;
+        }
+
+        const newTotal = totalExpenses + (expenseToEdit ? (priceNumber - expenseToEdit.price) : priceNumber);
+        if (newTotal > budget) {
+            setMessage('Expense exceeds remaining budget!');
+            setTimeout(() => setMessage(''), 5000);
+            return;
+        }
+
+        if (expenseToEdit) {
+            setExpenses(expenses.map(expense =>
+                expense.id === expenseToEdit.id ? { ...expense, product, price: priceNumber } : expense
+            ));
+            setMessage(`Expense updated: ${product} - $${priceNumber}`);
+            setExpenseToEdit(null); 
+        } else {
+            const newExpense = { id: Date.now(), product, price: priceNumber };
+            setExpenses([...expenses, newExpense]);
+            setMessage(`Expense added: ${product} - $${priceNumber}`);
+        }
+
+        setTimeout(() => setMessage(''), 5000);
+    };
+
+    const deleteExpense = (id) => {
+        const expense = expenses.find((e) => e.id === id);
+        setExpenses(expenses.filter((e) => e.id !== id));
+        setMessage(`Expense deleted: ${expense.product} - $${expense.price}`);
+        setTimeout(() => setMessage(''), 5000);
+    };
+
+    // Edit Expense Handler
+    const editExpense = (expense) => {
+        setExpenseToEdit(expense);
+    };
+
+    // Calculate totals
+    const totalExpenses = expenses.reduce((total, expense) => total + expense.price, 0);
+    const remainingBalance = budget - totalExpenses;
+
+    // Real-time validation for budget input
+    const validateBudget = (value) => {
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) {
+            setValidationErrors((prev) => ({ ...prev, budget: 'Budget must be a number' }));
+        } else if (numValue < 0) {
+            setValidationErrors((prev) => ({ ...prev, budget: 'Budget must be a positive number' }));
+        } else {
+            setValidationErrors((prev) => ({ ...prev, budget: '' }));
+        }
+    };
+
+    const validateExpense = (product, price) => {
+        const priceNumber = parseFloat(price);
+        const errors = { product: '', price: '' };
+
+        if (!product) errors.product = 'Product name is required';
+        if (isNaN(priceNumber)) errors.price = 'Price must be a number';
+        if (priceNumber <= 0) errors.price = 'Price must be greater than 0';
+        if (priceNumber > remainingBalance) errors.price = 'Price exceeds remaining budget';
+
+        setValidationErrors((prev) => ({ ...prev, ...errors }));
+    };
+
+    return (
+        <BudgetContext.Provider
+            value={{
+                budget,
+                setBudget: handleSetBudget,
+                message,
+                expenses,
+                addExpense,
+                deleteExpense,
+                editExpense,
+                expenseToEdit,
+                totalExpenses,
+                remainingBalance,
+                validationErrors,
+                validateBudget,
+                validateExpense,
+            }}
+        >
+            {children}
+        </BudgetContext.Provider>
+    );
+};
+
+export const useBudgetContext = () => useContext(BudgetContext);
