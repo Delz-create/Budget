@@ -3,6 +3,7 @@ import Budget from './Components/Budget';
 import { BudgetProvider } from './Components/BudgetContext';
 import Expenses from './Components/Expenses';
 import ExpensesList from './Components/ExpensesList';
+import Filters from './Components/Filters';
 import Summary from './Components/Summary';
 
 
@@ -14,6 +15,7 @@ function App() {
           <Budget />
           <Expenses />
         </div>
+        <Filters />
         <Summary />
         <ExpensesList />
       </div>

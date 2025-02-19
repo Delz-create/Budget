@@ -4,7 +4,7 @@ import Edit from '../images/edit.svg'
 import Delete from '../images/delete.svg'
 
 function ExpensesList() {
-    const { expenses, deleteExpense, editExpense } = useBudgetContext()
+    const { deleteExpense, editExpense, filteredExpenses } = useBudgetContext()
 
   return (
     <div className='container'>
@@ -12,7 +12,7 @@ function ExpensesList() {
 
         <div className='expenses-list'>
             <ul>
-                {expenses.map((expense) => (
+                {filteredExpenses.map((expense) => (
                     <div className='expense_item' key={expense.id}>
                         <li>
                             <div className='expense_item-product_name'>

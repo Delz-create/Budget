@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useMemo } from 'react';
 
 const BudgetContext = createContext();
 
@@ -8,6 +8,7 @@ export const BudgetProvider = ({ children }) => {
         const savedBudget = localStorage.getItem('budget');
         return savedBudget ? parseFloat(savedBudget) : 0;
     });
+    
 
     const [message, setMessage] = useState('');
     const [expenses, setExpenses] = useState(() => {
@@ -28,8 +29,43 @@ export const BudgetProvider = ({ children }) => {
 
     const [expenseToEdit, setExpenseToEdit] = useState(null); 
 
+    const [filterCategory, setFilterCategory] = useState('All');
+    const [sortBy, setSortBy] = useState('date');
+    const [sortOrder, setSortOrder] = useState('desc');
+    const [searchQuery, setSearchQuery] = useState('');
+    
+    const filteredExpenses = useMemo(() => {
+        let filtered = [...expenses];
+
+        if (filterCategory !== 'All') {
+            filtered = filtered.filter(expense => expense.category === filterCategory);
+        }
+
+
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            filtered = filtered.filter(expense => 
+                expense.product.toLowerCase().includes(query)
+            );
+        }
+
+        filtered.sort((a, b) => {
+            if (sortBy === 'date') {
+                return new Date(a.date) - new Date(b.date);
+            } else if (sortBy === 'price') {
+                return a.price - b.price;
+            } else if (sortBy === 'category') {
+                return a.category.localeCompare(b.category);
+            }
+            return 0;
+        });
+
+        return sortOrder === 'desc' ? filtered.reverse() : filtered;
+    }, [filterCategory, searchQuery, sortBy, sortOrder, expenses]);
+
     useEffect(() => localStorage.setItem('budget', budget), [budget]);
     useEffect(() => localStorage.setItem('expenses', JSON.stringify(expenses)), [expenses]);
+
 
     const handleSetBudget = (value) => {
         const numValue = parseFloat(value);
@@ -139,6 +175,15 @@ export const BudgetProvider = ({ children }) => {
                 validationErrors,
                 validateBudget,
                 validateExpense,
+                filteredExpenses,
+                filterCategory,
+                setFilterCategory,
+                sortBy,
+                setSortBy,
+                sortOrder,
+                setSortOrder,
+                searchQuery,
+                setSearchQuery
             }}
         >
             {children}
