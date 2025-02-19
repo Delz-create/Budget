@@ -89,6 +89,7 @@ select{
     border-radius: .3rem;
     margin: .7rem 0 0 0;
     padding: .5rem;
+    outline: none;
 }
 
 .expense_item-product_btn 
