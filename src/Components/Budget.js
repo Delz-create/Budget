@@ -41,7 +41,7 @@ function Budget() {
             </div>
 
             {message && (
-                <div className='message'>
+                <div className='budget_message'>
                     <p>{message}</p>
                 </div>
             )}

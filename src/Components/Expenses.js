@@ -4,7 +4,8 @@ import { useBudgetContext } from './BudgetContext'
 function Expenses() {
     const [product, setProduct] = useState('')
     const [price, setPrice] = useState('')
-    const { addExpense, expenseToEdit, validationErrors, validateExpense } = useBudgetContext()
+    const { addExpense, expenseToEdit, validationErrors, validateExpense, categories } = useBudgetContext()
+    const [category, setCategory] = useState(categories[0])
 
     useEffect(() => {
         validateExpense(product, parseFloat(price || 0))
@@ -14,14 +15,16 @@ function Expenses() {
         if (expenseToEdit) {
             setProduct(expenseToEdit.product)
             setPrice(expenseToEdit.price.toString())
+            setCategory(expenseToEdit.category)
         }
     }, [expenseToEdit])
 
     const handleSubmit = e => {
         e.preventDefault()
-        addExpense(product, price)
+        addExpense(product, price, category)
         setProduct('')
         setPrice('')
+        setCategory(categories[0])
     }
 
   return (
@@ -47,9 +50,22 @@ function Expenses() {
                     placeholder='Price' 
                     onChange={e => setPrice(e.target.value)}
                 />
+
                 {validationErrors.price && (
                     <div className='error'>{validationErrors.price}</div>
                 )}
+                
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                >
+                    {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                            {cat}
+                        </option>
+                    ))}
+                </select>
+
             </div>
 
             <div className='Expenses_button'>

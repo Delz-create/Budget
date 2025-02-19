@@ -68,7 +68,6 @@ input:focus{
     justify-content: space-between;
 }
 
-
 .expense_item li{
     display: flex;
     justify-content: space-between;
@@ -84,6 +83,14 @@ input:focus{
     justify-content: space-between;
     gap: 1rem;
 }
+
+select{
+    border: 1px solid #d0d0d0;
+    border-radius: .3rem;
+    margin: .7rem 0 0 0;
+    padding: .5rem;
+}
+
 .expense_item-product_btn 
 button{
     padding: 0;
@@ -114,16 +121,13 @@ button{
         justify-content: center;
         text-align: center;
     }
+
     .total-budget,
     .total-expenses,
     .remaining-balance{
         margin: 0 0 .5rem 0;
     }
-    /* .expense_item
-    li{
-        display: flex;
-        flex-direction: column;
-    } */
+
     .expense_item-product_name h4{
         margin: 0 0 1rem 0;
     }

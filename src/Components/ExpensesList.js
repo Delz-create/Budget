@@ -23,6 +23,10 @@ function ExpensesList() {
                                 <p>${expense.price.toFixed(2)}</p>
                             </div>
 
+                            <div className='expense_item-product_category'>
+                                <p>{expense.category}</p>
+                            </div>
+        
                             <div className='expense_item-product_btn'>
                                 <div className='edit'>
                                     <button onClick={() => editExpense(expense)}>

@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const BudgetContext = createContext();
 
 export const BudgetProvider = ({ children }) => {
+    const categories = ['Food', 'Rent', 'Transport', 'Entertainment', 'Utilities', 'Others']
     const [budget, setBudget] = useState(() => {
         const savedBudget = localStorage.getItem('budget');
         return savedBudget ? parseFloat(savedBudget) : 0;
@@ -43,11 +44,11 @@ export const BudgetProvider = ({ children }) => {
             return;
         }
         setBudget(numValue);
-        setMessage(`Budget set to: $${numValue}`);
+        setMessage(`Your Budget $${numValue}`);
         setTimeout(() => setMessage(''), 5000);
     };
 
-    const addExpense = (product, price) => {
+    const addExpense = (product, price, category) => {
         const priceNumber = parseFloat(price);
 
         if (!product || isNaN(priceNumber)) {
@@ -71,12 +72,12 @@ export const BudgetProvider = ({ children }) => {
 
         if (expenseToEdit) {
             setExpenses(expenses.map(expense =>
-                expense.id === expenseToEdit.id ? { ...expense, product, price: priceNumber } : expense
+                expense.id === expenseToEdit.id ? { ...expense, product, price: priceNumber, category } : expense
             ));
             setMessage(`Expense updated: ${product} - $${priceNumber}`);
             setExpenseToEdit(null); 
         } else {
-            const newExpense = { id: Date.now(), product, price: priceNumber };
+            const newExpense = { id: Date.now(), product, price: priceNumber, category };
             setExpenses([...expenses, newExpense]);
             setMessage(`Expense added: ${product} - $${priceNumber}`);
         }
@@ -91,16 +92,13 @@ export const BudgetProvider = ({ children }) => {
         setTimeout(() => setMessage(''), 5000);
     };
 
-    // Edit Expense Handler
     const editExpense = (expense) => {
         setExpenseToEdit(expense);
     };
 
-    // Calculate totals
     const totalExpenses = expenses.reduce((total, expense) => total + expense.price, 0);
     const remainingBalance = budget - totalExpenses;
 
-    // Real-time validation for budget input
     const validateBudget = (value) => {
         const numValue = parseFloat(value);
         if (isNaN(numValue)) {
@@ -131,6 +129,7 @@ export const BudgetProvider = ({ children }) => {
                 setBudget: handleSetBudget,
                 message,
                 expenses,
+                categories,
                 addExpense,
                 deleteExpense,
                 editExpense,
