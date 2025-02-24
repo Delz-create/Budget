@@ -11,7 +11,7 @@
 
 body {
   font-family: roboto;
-  background-color: #03061a;
+  background-color: #f7d7ad;
   padding: 0.5rem 3rem;
 }
 
@@ -41,7 +41,6 @@ button {
 
 h2 {
   margin: 0.5rem 0;
-  color: #fff;
 }
 
 .budget input {
@@ -164,7 +163,6 @@ input {
 }
 .Expense_list h2 {
   margin: 0 0 1.7rem 0;
-  color: #111;
 }
 .expenses-list ul li {
   display: flex;
@@ -185,9 +183,6 @@ input {
   grid-template-columns: 1fr;
   gap: 1rem;
 }
-.visualizations h2 {
-  color: #111;
-}
 .chart-container {
   background: white;
   padding: 2rem;
@@ -202,7 +197,6 @@ input {
 }
 .export-data h2 {
   font-size: 1rem;
-  color: #111;
 }
 .csv {
   margin: 0 0.5rem 0 0;
