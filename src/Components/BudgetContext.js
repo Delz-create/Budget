@@ -348,7 +348,7 @@ export const BudgetProvider = ({ children }) => {
     link.click();
   };
 
-  const [currency, setCurrency] = useState("USD");
+  const [currency, setCurrency] = useState("$");
   const [ExchangeRates, setExchangeRates] = useState({});
 
   useEffect(() => {

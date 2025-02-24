@@ -1,6 +1,7 @@
 import "./App.css";
 import Budget from "./Components/Budget";
 import { BudgetProvider } from "./Components/BudgetContext";
+import CurrencySelector from "./Components/CurrencySelector";
 import Expenses from "./Components/Expenses";
 import ExpensesList from "./Components/ExpensesList";
 import ExportData from "./Components/Exports/ExportData";
@@ -15,20 +16,21 @@ function App() {
   return (
     <BudgetProvider>
       <div className="App">
+        <CurrencySelector />
+        <Budget />
         <div className="Planner">
           <BudgetGoals />
           <SavingsGoals />
-          <IncomeTracker />
         </div>
+        <IncomeTracker />
         <div className="sub-container">
-          <Budget />
           <Expenses />
         </div>
         <Filters />
         <Summary />
         <ExpensesList />
-        <ExportData />
         <Visualizations />
+        <ExportData />
       </div>
     </BudgetProvider>
   );
